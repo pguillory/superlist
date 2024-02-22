@@ -31,7 +31,8 @@ defmodule Superlist.MixProject do
 
   defp deps do
     [
-      {:benchee, ">= 0.0.0", only: :dev}
+      {:benchee, ">= 0.0.0", only: :dev},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
 end
