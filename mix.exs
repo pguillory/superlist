@@ -3,7 +3,7 @@ defmodule Superlist.MixProject do
 
   def project do
     [
-      package: package()
+      package: package(),
       app: :superlist,
       version: "0.1.0",
       elixir: "~> 1.16",
