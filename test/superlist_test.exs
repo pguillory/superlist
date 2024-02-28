@@ -36,6 +36,16 @@ defmodule SuperListTest do
     assert transpose([1, 3], [2, 4]) == [[1, 2], [3, 4]]
   end
 
+  test "take_opts" do
+    assert take_opts([], a: 3) == [a: 3]
+    assert take_opts([a: 1], a: 3) == [a: 1]
+    assert take_opts([a: 1, b: 2], a: 3) == [a: 1]
+
+    assert take_opts([], a: 3, b: 4) == [a: 3, b: 4]
+    assert take_opts([a: 1], a: 3, b: 4) == [a: 1, b: 4]
+    assert take_opts([a: 1, b: 2], a: 3, b: 4) == [a: 1, b: 2]
+  end
+
   test "applicable?" do
     assert applicable?([]) == false
     assert applicable?([1]) == true

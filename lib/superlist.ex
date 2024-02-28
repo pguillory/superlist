@@ -37,6 +37,19 @@ defmodule SuperList do
         end
       end)
 
+    keys = Enum.map(1..arity, &Macro.var(:"key#{&1}", __MODULE__))
+    values = Enum.map(1..arity, &Macro.var(:"value#{&1}", __MODULE__))
+
+    keys_and_values =
+      Enum.map(1..arity, fn i ->
+        quote do
+          {
+            unquote(Macro.var(:"key#{i}", __MODULE__)),
+            unquote(Macro.var(:"value#{i}", __MODULE__))
+          }
+        end
+      end)
+
     def map(unquote_splicing(heads_and_tails), func) do
       value = func.(unquote_splicing(heads))
       [value | map(unquote_splicing(tails), func)]
@@ -107,6 +120,32 @@ defmodule SuperList do
 
     def applicable?([unquote_splicing(underscores)]) do
       true
+    end
+
+    def take_opts(opts, [unquote_splicing(keys_and_values)]) do
+      take_opts2(opts, unquote_splicing(keys), unquote_splicing(values))
+    end
+
+    for arity2 <- 1..arity do
+      key = Macro.var(:"key#{arity2}", __MODULE__)
+      value = Macro.var(:"value#{arity2}", __MODULE__)
+
+      other_values =
+        List.replace_at(values, arity2 - 1, quote do
+          _
+        end)
+
+      defp take_opts2([{unquote(key), unquote(value)} | opts], unquote_splicing(keys), unquote_splicing(other_values)) do
+        take_opts2(opts, unquote_splicing(keys), unquote_splicing(values))
+      end
+    end
+
+    defp take_opts2([{_, _} | opts], unquote_splicing(keys), unquote_splicing(values)) do
+      take_opts2(opts, unquote_splicing(keys), unquote_splicing(values))
+    end
+
+    defp take_opts2([], unquote_splicing(keys), unquote_splicing(values)) do
+      [unquote_splicing(keys_and_values)]
     end
   end
 
