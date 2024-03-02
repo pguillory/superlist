@@ -110,11 +110,15 @@ defmodule SuperList do
       {unquote_splicing(reversed_lists)}
     end
 
-    def transpose(unquote_splicing(heads_and_tails)) do
-      [[unquote_splicing(heads)] | transpose(unquote_splicing(tails))]
+    def transpose([unquote_splicing(heads_and_tails)]) do
+      transpose2(unquote_splicing(heads_and_tails))
     end
 
-    def transpose(unquote_splicing(empty_lists)) do
+    defp transpose2(unquote_splicing(heads_and_tails)) do
+      [[unquote_splicing(heads)] | transpose2(unquote_splicing(tails))]
+    end
+
+    defp transpose2(unquote_splicing(empty_lists)) do
       []
     end
 
