@@ -39,11 +39,14 @@ defmodule SuperListTest do
   test "take_opts" do
     assert take_opts([], a: 3) == [a: 3]
     assert take_opts([a: 1], a: 3) == [a: 1]
-    assert take_opts([a: 1, b: 2], a: 3) == [a: 1]
 
     assert take_opts([], a: 3, b: 4) == [a: 3, b: 4]
     assert take_opts([a: 1], a: 3, b: 4) == [a: 1, b: 4]
     assert take_opts([a: 1, b: 2], a: 3, b: 4) == [a: 1, b: 2]
+  end
+
+  test "take_opts rejects unexpected keys" do
+    assert catch_error(take_opts([a: 1, b: 2], a: 3)) == :function_clause
   end
 
   test "applicable?" do

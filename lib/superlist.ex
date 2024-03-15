@@ -144,9 +144,9 @@ defmodule SuperList do
       end
     end
 
-    defp take_opts2([{_, _} | opts], unquote_splicing(keys), unquote_splicing(values)) do
-      take_opts2(opts, unquote_splicing(keys), unquote_splicing(values))
-    end
+    # defp take_opts2([{_, _} | opts], unquote_splicing(keys), unquote_splicing(values)) do
+    #   take_opts2(opts, unquote_splicing(keys), unquote_splicing(values))
+    # end
 
     defp take_opts2([], unquote_splicing(keys), unquote_splicing(values)) do
       [unquote_splicing(keys_and_values)]
