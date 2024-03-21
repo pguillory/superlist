@@ -33,6 +33,7 @@ defmodule SuperListTest do
   end
 
   test "transpose" do
+    assert transpose([[], []]) == []
     assert transpose([[1], [2]]) == [[1, 2]]
     assert transpose([[1, 2]]) == [[1], [2]]
     assert transpose([[1, 3], [2, 4]]) == [[1, 2], [3, 4]]

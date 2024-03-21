@@ -114,6 +114,10 @@ defmodule SuperList do
       transpose2(unquote_splicing(heads_and_tails))
     end
 
+    def transpose([unquote_splicing(empty_lists)]) do
+      []
+    end
+
     defp transpose2(unquote_splicing(heads_and_tails)) do
       [[unquote_splicing(heads)] | transpose2(unquote_splicing(tails))]
     end
