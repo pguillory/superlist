@@ -6,6 +6,10 @@ defmodule SuperListTest do
     assert map([1, 2], [3, 4], &(&1 * &2)) == [3, 8]
   end
 
+  test "flat_map" do
+    assert flat_map([1, 2], [3, 4], &[&1, &2]) == [1, 3, 2, 4]
+  end
+
   test "reduce" do
     assert reduce([1, 2], [3, 4], 0, &(&1 * &2 + &3)) == 11
   end

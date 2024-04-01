@@ -59,6 +59,15 @@ defmodule SuperList do
       []
     end
 
+    def flat_map(unquote_splicing(heads_and_tails), func) do
+      values = func.(unquote_splicing(heads))
+      values ++ flat_map(unquote_splicing(tails), func)
+    end
+
+    def flat_map(unquote_splicing(empty_lists), _func) do
+      []
+    end
+
     def reduce(unquote_splicing(heads_and_tails), acc, func) do
       acc = func.(unquote_splicing(heads), acc)
       reduce(unquote_splicing(tails), acc, func)
