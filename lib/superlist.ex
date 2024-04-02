@@ -77,6 +77,24 @@ defmodule SuperList do
       acc
     end
 
+    def flat_map_reduce(unquote_splicing(lists), acc, func) do
+      flat_map_reduce2(unquote_splicing(lists), [], acc, func)
+    end
+
+    defp flat_map_reduce2(unquote_splicing(heads_and_tails), values, acc, func) do
+      case func.(unquote_splicing(heads), acc) do
+        {:halt, acc} ->
+          flat_map_reduce2(unquote_splicing(empty_lists), values, acc, func)
+
+        {values2, acc} ->
+          flat_map_reduce2(unquote_splicing(tails), Enum.reverse(values2, values), acc, func)
+      end
+    end
+
+    defp flat_map_reduce2(unquote_splicing(empty_lists), values, acc, _func) do
+      {Enum.reverse(values), acc}
+    end
+
     def map_reduce(unquote_splicing(lists), acc, func) do
       map_reduce2(unquote_splicing(lists), [], acc, func)
     end

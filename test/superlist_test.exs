@@ -18,6 +18,20 @@ defmodule SuperListTest do
     assert map_reduce([1, 2], [3, 4], 0, &{&1 * &2, &1 * &2 + &3}) == {[3, 8], 11}
   end
 
+  test "flat_map_reduce" do
+    assert flat_map_reduce([1, 2], [3, 4], 0, &{[&1, &2], &1 * &2 + &3}) == {[1, 3, 2, 4], 11}
+
+    halt_on_3 = fn element, acc ->
+      if element <= 3 do
+        {[element], acc}
+      else
+        {:halt, acc}
+      end
+    end
+
+    assert flat_map_reduce([1, 2, 3, 4], 0, halt_on_3) == {[1, 2, 3], 0}
+  end
+
   test "each" do
     {:ok, agent} = Agent.start_link(fn -> [] end)
     assert each([1, 2], [3, 4], &Agent.update(agent, fn acc -> [{&1, &2} | acc] end)) == :ok
