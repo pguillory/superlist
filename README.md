@@ -6,50 +6,65 @@ Sometimes you need to iterate over multiple lists simultaneously. For
 example, to merge two lists, taking the maximum value between the two at each
 offset:
 
-    Enum.zip(list1, list2)
-    |> Enum.map(fn {element1, element2} ->
-      max(element1, element2)
-    end)
+```elixir
+Enum.zip(list1, list2)
+|> Enum.map(fn {element1, element2} ->
+  max(element1, element2)
+end)
+```
 
 While this works, it is verbose and inefficient. The Enum.zip call creates
 tuples that we immediately match and throw away. If you've attempted to
 optimize similar code, you may have written something like:
 
-    def max_of_lists([element1 | list1], [element2 | list2]) do
-      [max(element1, element2) | max_of_lists(list1, list2)]
-    end
-    
-    def max_of_lists([], []) do
-      []
-    end
+```elixir
+def max_of_lists([element1 | list1], [element2 | list2]) do
+  [max(element1, element2) | max_of_lists(list1, list2)]
+end
+
+def max_of_lists([], []) do
+  []
+end
+```
 
 Don't clutter your codebase with ad-hoc iteration code like this! Write it
 more cleanly with SuperList:
 
-    SuperList.map(list1, list2, &max/2)
+```elixir
+SuperList.map(list1, list2, &max/2)
+```
 
 ## So it's like Enum.zip_with, or what?
 
 Yeah, these are equivalent both in semantics and performance:
 
-    Enum.zip_with(list1, list2, func)
+```elixir
+Enum.zip_with(list1, list2, func)
+```
 
-    SuperList.map(list1, list2, func)
+```elixir
+SuperList.map(list1, list2, func)
+```
 
 However things change with 3+ lists. Enum supports variable numbers of
 arguments by accepting a list with a variable number of elements, whereas
 Superlist defines multiple implementations with variable arities.
 
-    Enum.zip_with([list1, list2, list3], fn [element1, element2, element3] ->
-      func.(element1, element2, element3)
-    end)
+```elixir
+Enum.zip_with([list1, list2, list3], fn [element1, element2, element3] ->
+  func.(element1, element2, element3)
+end)
+```
 
-    SuperList.map(list1, list2, list3, func)
-
+```elixir
+SuperList.map(list1, list2, list3, func)
+```
 In the above example with 3 lists, SuperList is not only cleaner but about 3.8x faster.
 
 ## Supported functions
 
+| Enum function | SuperList equivalent |
+| --- | --- |
 | Enum.each | SuperList.each |
 | Enum.map | SuperList.map |
 | Enum.map_reduce | SuperList.map_reduce |
@@ -57,10 +72,12 @@ In the above example with 3 lists, SuperList is not only cleaner but about 3.8x 
 | Enum.unzip | SuperList.unzip |
 | Enum.zip | SuperList.zip |
 
-    SuperList.map(list1, func/1)
-    SuperList.map(list1, list2, func/2)
-    SuperList.map(list1, list2, list3, func/3)
-    # ...etc.
+```elixir
+SuperList.map(list1, func/1)
+SuperList.map(list1, list2, func/2)
+SuperList.map(list1, list2, list3, func/3)
+# ...etc.
+```
 
 ## Code generation
 
