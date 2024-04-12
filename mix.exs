@@ -5,7 +5,7 @@ defmodule Superlist.MixProject do
     [
       package: package(),
       app: :superlist,
-      version: "0.1.4",
+      version: "0.1.5",
       elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
       deps: deps()
