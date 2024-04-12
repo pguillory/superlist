@@ -157,6 +157,14 @@ defmodule SuperList do
       true
     end
 
+    for arity2 <- arity..1 do
+      values2 = Enum.map(1..arity2, &Macro.var(:"value#{&1}", __MODULE__))
+
+      def split([unquote_splicing(values2) | suffix], unquote(arity)) do
+        {[unquote_splicing(values2)], suffix}
+      end
+    end
+
     def take_opts(opts, [unquote_splicing(keys_and_values)]) do
       take_opts2(opts, unquote_splicing(keys), unquote_splicing(values))
     end
@@ -186,6 +194,18 @@ defmodule SuperList do
 
   def applicable?(_) do
     false
+  end
+
+  def split([], _) do
+    {[], []}
+  end
+
+  def split(list, 0) do
+    {[], list}
+  end
+
+  def split(list, n) do
+    Enum.split(list, n)
   end
 
   def max_arity do

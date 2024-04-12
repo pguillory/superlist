@@ -57,6 +57,26 @@ defmodule SuperListTest do
     assert transpose([[1, 3], [2, 4]]) == [[1, 2], [3, 4]]
   end
 
+  test "split" do
+    assert split([], 0) == {[], []}
+    assert split([], 1) == {[], []}
+
+    assert split([1], 0) == {[], [1]}
+    assert split([1], 1) == {[1], []}
+    assert split([1], 2) == {[1], []}
+
+    assert split([1, 2], 0) == {[], [1, 2]}
+    assert split([1, 2], 1) == {[1], [2]}
+    assert split([1, 2], 2) == {[1, 2], []}
+    assert split([1, 2], 3) == {[1, 2], []}
+
+    assert split([1, 2, 3], 0) == {[], [1, 2, 3]}
+    assert split([1, 2, 3], 1) == {[1], [2, 3]}
+    assert split([1, 2, 3], 2) == {[1, 2], [3]}
+    assert split([1, 2, 3], 3) == {[1, 2, 3], []}
+    assert split([1, 2, 3], 4) == {[1, 2, 3], []}
+  end
+
   test "take_opts" do
     assert take_opts([], a: 3) == [a: 3]
     assert take_opts([a: 1], a: 3) == [a: 1]
