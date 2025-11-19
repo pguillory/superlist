@@ -23,6 +23,14 @@ defmodule SuperList do
         end
       end)
 
+    reversed_flattened_lists =
+      Enum.map(1..arity//1, fn i ->
+        quote do
+          Enum.reverse(unquote(Macro.var(:"list#{i}", __MODULE__)))
+          |> Enum.concat()
+        end
+      end)
+
     empty_lists =
       Enum.map(1..arity//1, fn _ ->
         quote do
@@ -135,6 +143,18 @@ defmodule SuperList do
 
     defp unzip([], unquote_splicing(lists)) do
       {unquote_splicing(reversed_lists)}
+    end
+
+    def flat_unzip([{unquote_splicing(underscores)} | _] = list) do
+      flat_unzip(list, unquote_splicing(empty_lists))
+    end
+
+    defp flat_unzip([{unquote_splicing(heads)} | list], unquote_splicing(tails)) do
+      flat_unzip(list, unquote_splicing(heads_and_tails))
+    end
+
+    defp flat_unzip([], unquote_splicing(lists)) do
+      {unquote_splicing(reversed_flattened_lists)}
     end
 
     def transpose([unquote_splicing(heads_and_tails)]) do

@@ -50,6 +50,12 @@ defmodule SuperListTest do
     assert unzip([{1, 3, 5}, {2, 4, 6}]) == {[1, 2], [3, 4], [5, 6]}
   end
 
+  test "flat_unzip" do
+    assert flat_unzip([{[1]}, {[2]}]) == {[1, 2]}
+    assert flat_unzip([{[1], [3]}, {[2], [4]}]) == {[1, 2], [3, 4]}
+    assert flat_unzip([{[1], [3], [5]}, {[2], [4], [6]}]) == {[1, 2], [3, 4], [5, 6]}
+  end
+
   test "transpose" do
     assert transpose([[], []]) == []
     assert transpose([[1], [2]]) == [[1, 2]]
