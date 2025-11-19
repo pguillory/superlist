@@ -174,11 +174,19 @@ defmodule SuperList do
       value = Macro.var(:"value#{arity2}", __MODULE__)
 
       other_values =
-        List.replace_at(values, arity2 - 1, quote do
-          _
-        end)
+        List.replace_at(
+          values,
+          arity2 - 1,
+          quote do
+            _
+          end
+        )
 
-      defp take_opts2([{unquote(key), unquote(value)} | opts], unquote_splicing(keys), unquote_splicing(other_values)) do
+      defp take_opts2(
+             [{unquote(key), unquote(value)} | opts],
+             unquote_splicing(keys),
+             unquote_splicing(other_values)
+           ) do
         take_opts2(opts, unquote_splicing(keys), unquote_splicing(values))
       end
     end
