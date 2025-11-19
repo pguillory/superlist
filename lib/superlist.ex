@@ -177,7 +177,7 @@ defmodule SuperList do
       true
     end
 
-    for arity2 <- arity..1//1 do
+    for arity2 <- arity..1//-1 do
       values2 = Enum.map(1..arity2//1, &Macro.var(:"value#{&1}", __MODULE__))
 
       def split([unquote_splicing(values2) | suffix], unquote(arity)) do
