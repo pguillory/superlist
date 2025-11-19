@@ -126,14 +126,14 @@ defmodule SuperList do
     end
 
     def unzip([{unquote_splicing(underscores)} | _] = list) do
-      unzip2(list, unquote_splicing(empty_lists))
+      unzip(list, unquote_splicing(empty_lists))
     end
 
-    defp unzip2([{unquote_splicing(heads)} | list], unquote_splicing(tails)) do
-      unzip2(list, unquote_splicing(heads_and_tails))
+    defp unzip([{unquote_splicing(heads)} | list], unquote_splicing(tails)) do
+      unzip(list, unquote_splicing(heads_and_tails))
     end
 
-    defp unzip2([], unquote_splicing(lists)) do
+    defp unzip([], unquote_splicing(lists)) do
       {unquote_splicing(reversed_lists)}
     end
 
