@@ -1,13 +1,13 @@
 defmodule SuperList do
   @max_arity Application.compile_env(:superlist, :max_arity, 25)
 
-  for arity <- 1..@max_arity do
-    heads = Enum.map(1..arity, &Macro.var(:"head#{&1}", __MODULE__))
-    tails = Enum.map(1..arity, &Macro.var(:"tail#{&1}", __MODULE__))
-    lists = Enum.map(1..arity, &Macro.var(:"list#{&1}", __MODULE__))
+  for arity <- 1..@max_arity//1 do
+    heads = Enum.map(1..arity//1, &Macro.var(:"head#{&1}", __MODULE__))
+    tails = Enum.map(1..arity//1, &Macro.var(:"tail#{&1}", __MODULE__))
+    lists = Enum.map(1..arity//1, &Macro.var(:"list#{&1}", __MODULE__))
 
     heads_and_tails =
-      Enum.map(1..arity, fn i ->
+      Enum.map(1..arity//1, fn i ->
         quote do
           [
             unquote(Macro.var(:"head#{i}", __MODULE__))
@@ -17,31 +17,31 @@ defmodule SuperList do
       end)
 
     reversed_lists =
-      Enum.map(1..arity, fn i ->
+      Enum.map(1..arity//1, fn i ->
         quote do
           Enum.reverse(unquote(Macro.var(:"list#{i}", __MODULE__)))
         end
       end)
 
     empty_lists =
-      Enum.map(1..arity, fn _ ->
+      Enum.map(1..arity//1, fn _ ->
         quote do
           []
         end
       end)
 
     underscores =
-      Enum.map(1..arity, fn _ ->
+      Enum.map(1..arity//1, fn _ ->
         quote do
           _
         end
       end)
 
-    keys = Enum.map(1..arity, &Macro.var(:"key#{&1}", __MODULE__))
-    values = Enum.map(1..arity, &Macro.var(:"value#{&1}", __MODULE__))
+    keys = Enum.map(1..arity//1, &Macro.var(:"key#{&1}", __MODULE__))
+    values = Enum.map(1..arity//1, &Macro.var(:"value#{&1}", __MODULE__))
 
     keys_and_values =
-      Enum.map(1..arity, fn i ->
+      Enum.map(1..arity//1, fn i ->
         quote do
           {
             unquote(Macro.var(:"key#{i}", __MODULE__)),
@@ -157,8 +157,8 @@ defmodule SuperList do
       true
     end
 
-    for arity2 <- arity..1 do
-      values2 = Enum.map(1..arity2, &Macro.var(:"value#{&1}", __MODULE__))
+    for arity2 <- arity..1//1 do
+      values2 = Enum.map(1..arity2//1, &Macro.var(:"value#{&1}", __MODULE__))
 
       def split([unquote_splicing(values2) | suffix], unquote(arity)) do
         {[unquote_splicing(values2)], suffix}
@@ -169,7 +169,7 @@ defmodule SuperList do
       take_opts2(opts, unquote_splicing(keys), unquote_splicing(values))
     end
 
-    for arity2 <- 1..arity do
+    for arity2 <- 1..arity//1 do
       key = Macro.var(:"key#{arity2}", __MODULE__)
       value = Macro.var(:"value#{arity2}", __MODULE__)
 
